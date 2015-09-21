@@ -34,6 +34,7 @@
             this.pbCountdown = new System.Windows.Forms.ProgressBar();
             this.timerTicker = new System.Windows.Forms.Timer(this.components);
             this.ttProgress = new System.Windows.Forms.ToolTip(this.components);
+            this.cmbTime = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
             // 
             // btnStart
@@ -54,6 +55,7 @@
             this.btnOverride.TabIndex = 1;
             this.btnOverride.Text = "Override";
             this.btnOverride.UseVisualStyleBackColor = true;
+            this.btnOverride.Click += new System.EventHandler(this.btnOverride_Click);
             // 
             // pbCountdown
             // 
@@ -69,11 +71,26 @@
             this.timerTicker.Interval = 1000;
             this.timerTicker.Tick += new System.EventHandler(this.timerTicker_Tick);
             // 
+            // cmbTime
+            // 
+            this.cmbTime.FormattingEnabled = true;
+            this.cmbTime.Items.AddRange(new object[] {
+            "2",
+            "5",
+            "7",
+            "10"});
+            this.cmbTime.Location = new System.Drawing.Point(177, 14);
+            this.cmbTime.Name = "cmbTime";
+            this.cmbTime.Size = new System.Drawing.Size(92, 21);
+            this.cmbTime.TabIndex = 3;
+            this.cmbTime.Text = "5";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(299, 90);
+            this.Controls.Add(this.cmbTime);
             this.Controls.Add(this.pbCountdown);
             this.Controls.Add(this.btnOverride);
             this.Controls.Add(this.btnStart);
@@ -91,6 +108,7 @@
         private System.Windows.Forms.ProgressBar pbCountdown;
         private System.Windows.Forms.Timer timerTicker;
         private System.Windows.Forms.ToolTip ttProgress;
+        private System.Windows.Forms.ComboBox cmbTime;
     }
 }
 

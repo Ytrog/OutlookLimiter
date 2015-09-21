@@ -16,17 +16,34 @@ namespace OutlookLimiter
         public Form1()
         {
             InitializeComponent();
+            var defaultTitle = this.Text;
+            if (defaultTitle != null) _defaultTitle = defaultTitle;
         }
 
         private Process _process;
-        private const int _time = 1;
+        private int _time = 5;
         private bool _shownWarning = false;
+        private readonly string _defaultTitle;
+#if BOX
+        private Form _messageForm;
+#endif
+
 
         private void btnStart_Click(object sender, EventArgs e)
         {
-            _process = Process.Start("outlook.exe");
+            _time = Convert.ToInt32(cmbTime.SelectedItem);
+            _process = GetProcess();
+            Text = _defaultTitle + " - " + _process.Id;
             btnStart.Enabled = false;
+            cmbTime.Enabled = false;
             StartTimer();
+        }
+
+        private static Process GetProcess()
+        {
+            Process[] processes = Process.GetProcessesByName("outlook");
+
+            return processes.FirstOrDefault() ?? Process.Start("outlook.exe");
         }
 
         private void StartTimer()
@@ -42,14 +59,23 @@ namespace OutlookLimiter
         private void timerTicker_Tick(object sender, EventArgs e)
         {
 
-            if (pbCountdown.Value < pbCountdown.Maximum)
+            if (pbCountdown.Value < pbCountdown.Maximum && _process.Running())
             {
                 pbCountdown.PerformStep();
                 
                 if (pbCountdown.Value >= (pbCountdown.Maximum - 60) && pbCountdown.Maximum > 60 && !_shownWarning)
                 {
                     _shownWarning = true;
+
+#if BOX
+                    _messageForm = CreateBlankForm();
+                    _messageForm.Show(this);
+                    MessageBox.Show(_messageForm,"time almost up");
+#else
                     MessageBox.Show("time almost up");
+#endif
+
+                    
                 }
             }
             else
@@ -65,13 +91,47 @@ namespace OutlookLimiter
 
         private void Stop()
         {
-            _process.CloseMainWindow();
+            _process.Stop();
             btnStart.Enabled = true;
+            pbCountdown.Value = 0;
+            timerTicker.Stop();
+            Text = _defaultTitle;
+#if BOX
+            if (_messageForm != null)
+            {
+                _messageForm.Close();
+            }
+#endif
+
         }
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
-            Stop();
+            _process.Stop();
         }
+
+        private void btnOverride_Click(object sender, EventArgs e)
+        {
+            if (timerTicker.Enabled)
+            {
+                timerTicker.Enabled = false;
+                btnOverride.FlatStyle = FlatStyle.Flat;
+            }
+            else
+            {
+                timerTicker.Enabled = true;
+                btnOverride.FlatStyle = FlatStyle.Standard;
+            }
+        }
+
+#if BOX
+        private Form CreateBlankForm()
+        {
+            return new Form() { Size = new Size(0, 0) };
+        }
+#endif
+
+
+        
     }
 }
