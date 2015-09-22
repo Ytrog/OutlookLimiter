@@ -24,6 +24,7 @@ namespace OutlookLimiter
         private int _time = 5;
         private bool _shownWarning = false;
         private readonly string _defaultTitle;
+        private ControlHelperCollection _controls;
 #if BOX
         private Form _messageForm;
 #endif
@@ -34,8 +35,9 @@ namespace OutlookLimiter
             _time = Convert.ToInt32(cmbTime.SelectedItem);
             _process = GetProcess();
             Text = _defaultTitle + " - " + _process.Id;
-            btnStart.Enabled = false;
-            cmbTime.Enabled = false;
+            /*btnStart.Enabled = false;
+            cmbTime.Enabled = false;*/
+            _controls.Disable();
             StartTimer();
         }
 
@@ -72,10 +74,11 @@ namespace OutlookLimiter
                     _messageForm.Show(this);
                     MessageBox.Show(_messageForm,"time almost up");
 #else
-                    MessageBox.Show("time almost up");
+                    MessageBox.Show(@"time almost up");
+                    
 #endif
 
-                    
+
                 }
             }
             else
@@ -92,8 +95,10 @@ namespace OutlookLimiter
         private void Stop()
         {
             _process.Stop();
-            btnStart.Enabled = true;
+            //btnStart.Enabled = true;
             pbCountdown.Value = 0;
+            //cmbTime.Enabled = true;
+            _controls.Enable();
             timerTicker.Stop();
             Text = _defaultTitle;
 #if BOX
@@ -115,13 +120,20 @@ namespace OutlookLimiter
             if (timerTicker.Enabled)
             {
                 timerTicker.Enabled = false;
-                btnOverride.FlatStyle = FlatStyle.Flat;
+                btnOverride.FlatStyle = FlatStyle.Popup;
             }
             else
             {
                 timerTicker.Enabled = true;
                 btnOverride.FlatStyle = FlatStyle.Standard;
             }
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            _controls = new ControlHelperCollection();
+            _controls.Add(cmbTime);
+            _controls.Add(btnStart);
         }
 
 #if BOX
