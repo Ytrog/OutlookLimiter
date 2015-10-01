@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using OutlookLimiter.Properties;
 
 namespace OutlookLimiter
 {
@@ -74,8 +75,10 @@ namespace OutlookLimiter
                     _messageForm.Show(this);
                     MessageBox.Show(_messageForm,"time almost up");
 #else
-                    MessageBox.Show(@"time almost up");
-                    
+                    //MessageBox.Show(@"time almost up");
+                    niLimiterIcon.Icon = SystemIcons.Warning;
+                    niLimiterIcon.ShowBalloonTip(TimeSpan.FromSeconds(10).TotalMilliseconds.ToInt(), Resources.TIME_WARNING, Resources.TIME_WARNING, ToolTipIcon.Info);
+
 #endif
 
 
@@ -101,6 +104,7 @@ namespace OutlookLimiter
             _controls.Enable();
             timerTicker.Stop();
             Text = _defaultTitle;
+            _shownWarning = false;
 #if BOX
             if (_messageForm != null)
             {

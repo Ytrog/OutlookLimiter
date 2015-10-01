@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 
 namespace OutlookLimiter
 {
@@ -16,6 +17,11 @@ namespace OutlookLimiter
         public static bool Running(this Process p)
         {
             return p != null && !p.HasExited;
+        }
+
+        public static int ToInt(this double d)
+        {
+            return Convert.ToInt32(d);
         }
     }
 }

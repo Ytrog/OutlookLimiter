@@ -35,6 +35,7 @@
             this.timerTicker = new System.Windows.Forms.Timer(this.components);
             this.ttProgress = new System.Windows.Forms.ToolTip(this.components);
             this.cmbTime = new System.Windows.Forms.ComboBox();
+            this.niLimiterIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.SuspendLayout();
             // 
             // btnStart
@@ -85,6 +86,11 @@
             this.cmbTime.TabIndex = 3;
             this.cmbTime.Text = "5";
             // 
+            // niLimiterIcon
+            // 
+            this.niLimiterIcon.Text = "Outlook limiter";
+            this.niLimiterIcon.Visible = true;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -110,6 +116,7 @@
         private System.Windows.Forms.Timer timerTicker;
         private System.Windows.Forms.ToolTip ttProgress;
         private System.Windows.Forms.ComboBox cmbTime;
+        private System.Windows.Forms.NotifyIcon niLimiterIcon;
     }
 }
 
