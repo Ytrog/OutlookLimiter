@@ -78,7 +78,8 @@ namespace OutlookLimiter
                     //MessageBox.Show(@"time almost up");
                     niLimiterIcon.Icon = SystemIcons.Warning;
                     niLimiterIcon.ShowBalloonTip(TimeSpan.FromSeconds(10).TotalMilliseconds.ToInt(), Resources.TIME_WARNING, Resources.TIME_WARNING, ToolTipIcon.Info);
-
+                    this.Activate();
+                    this.WindowState = FormWindowState.Normal;
 #endif
 
 
